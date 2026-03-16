@@ -17,10 +17,10 @@
 # gcc-4.9.2 and clang-3.5.0 happy without it.
 
 CFLAGS += -std=c99  # should also still work with -std=c89
-CFLAGS += -D_POSIX_C_SOURCE=199309 -D_BSD_SOURCE
-CFLAGS += -W -Wall  # -W is spelled -Wextra these days, but -W is stilli
-                    # valid and works with older compilers.
+CFLAGS += -D_DEFAULT_SOURCE
+CFLAGS += -Wall -Wextra
 CFLAGS += -O2
+CFLAGS += -Wshadow -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wcast-align -Wcast-qual -Wwrite-strings -Wundef -pedantic
 CFLAGS += -DPRECISION_SIOCGSTAMP
 CFLAGS += -DENABLE_DEBUG
 CFLAGS += -DENABLE_REPLAY

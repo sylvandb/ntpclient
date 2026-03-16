@@ -7,8 +7,8 @@
  *  it under the terms of the GNU General Public License (Version 2,
  *  June 1991) as published by the Free Software Foundation.  At the
  *  time of writing, that license was published by the FSF with the URL
- *  http://www.gnu.org/copyleft/gpl.html, and is incorporated herein by
- *  reference.
+ *  https://www.gnu.org/licenses/old-licenses/gpl-2.0.html, and is
+ *  incorporated herein by reference.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -23,9 +23,9 @@
  *
  *  Compile with -DPRECISION_SIOCGSTAMP if your machine really has it.
  *  Older kernels (before the tickless era, pre 3.0?) only give an answer
- *  to the nearest jiffy (1/100 second), not so interesting for us.
+ *  to the nearest jiffy (1/100 second), which is not so interesting for us.
  *
- *  If the compile gives you any flak, check below in the section
+ *  If the compile gives you any flack, check below in the section
  *  labelled "XXX fixme - non-automatic build configuration".
  */
 
@@ -42,6 +42,7 @@
 #include <errno.h>
 #ifdef PRECISION_SIOCGSTAMP
 #include <sys/ioctl.h>
+#include <linux/sockios.h>
 #endif
 #ifdef USE_OBSOLETE_GETTIMEOFDAY
 #include <sys/time.h>
@@ -600,6 +601,8 @@ int main(int argc, char *argv[]) {
 	char *hostname=NULL;          /* must be set */
 	int initial_freq;             /* initial freq value to use */
 	struct ntp_control ntpc;
+	ntpc.time_of_send[0]=0;
+	ntpc.time_of_send[1]=0;
 	ntpc.live=0;
 	ntpc.set_clock=0;
 	ntpc.probe_count=0;           /* default of 0 means loop forever */

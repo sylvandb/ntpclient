@@ -14,7 +14,7 @@ ntpclient home page: http://doolittle.icarus.com/ntpclient/
 
 Joachim Nilsson created a fork of ntpclient that he maintains at
 http://vmlinux.org/jocke/ntpclient.shtml.  We don't have the same
-maintainance and build system sensibilities; some people may prefer his.
+maintenance and build system sensibilities; some people may prefer his.
 In particular, he has converted his ntpclient to daemon and syslog.
 The basic functionality of the two versions should be identical.
 
@@ -170,15 +170,23 @@ Changes since ntpclient_2007_365:
  -- add -fno-strict-aliasing as needed by traditional network coding style
 
 Changes since ntpclient_2010_365:
- -- fixed and re-enabled -DPRECISION_SIOCGSTAMP, seems to work properly with
-      modern (e.g., 3.x or 4.x) Linux kernel
+ -- fixed and re-enabled -DPRECISION_SIOCGSTAMP, which seems to work properly
+      with modern (e.g., 3.x or 4.x) Linux kernels
  -- tweak coding style to work better with modern compilers (e.g.,
-      gcc-gcc-4.9.2 and clang-3.5.0)
+      gcc-4.9.2 and clang-3.5.0)
  -- make c99 the default
  -- list more warning flags in disabled part of Makefile
  -- minor whitespace, parenthesis, and spelling changes in source files
  -- use LDLIBES instad of LDFLAGS for -lrt in Makefile (thanks, ChristophGr)
  -- move _POSIX_C_SOURCE and _BSD_SOURCE to Makefile
+
+Changes since ntpclient_2015_365:
+ -- use modern -D_DEFAULT_SOURCE and -Wextra in Makefile
+ -- initialize all fields of ntp_control structure
+ -- include <linux/sockios.h> to get SIOCGSTAMP with linux-5.2 and above
+ -- update URL for GPLv2
+ -- test on gcc-8.3.0, gcc-10.2.1, and gcc-12.2.0
+ -- fix other small spelling, grammar, and punctuation problems
 
 Bugs:
  -- Doesn't understand the LI (Leap second Indicator) field of an NTP packet
