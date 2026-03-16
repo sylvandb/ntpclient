@@ -1,14 +1,16 @@
-ntpclient is an NTP (RFC-1305, RFC-4330) client for unix-alike computers.
-Its functionality is a small subset of xntpd, but IMHO performs
-better (or at least has the potential to function better) within
-that limited scope.  Since it is much smaller than xntpd, it is
-also more relevant for embedded computers.
+ntpclient is an NTP (RFC-1305, RFC-4330) client for unix-alike
+computers.  Its functionality is a small subset of xntpd, but IMHO
+performs better (or at least has the potential to function better)
+within that limited scope.  Since it is much smaller than xntpd, it
+is also more relevant for embedded computers.
 
-ntpclient is Copyright 1997-2015 Larry Doolittle,
-and may be freely copied and modified according to the terms of the GNU
-General Public License, version 2.  If you want to distribute ntpclient
-under other terms, contact me.  I might agree to some other arrangement,
-if you talk to me _before_ you start violating GPL terms.
+ntpclient is Copyright 1997-2024 Larry Doolittle
+
+ntpclient may be freely copied and modified according to the terms of
+the GNU General Public License, version 2.  If you want to distribute
+ntpclient under other terms, contact me (Larry Doolittle).  I might
+agree to some other arrangement, if you talk to me _before_ you start
+violating GPL terms.
 
 ntpclient home page: http://doolittle.icarus.com/ntpclient/
 
@@ -16,7 +18,6 @@ Joachim Nilsson created a fork of ntpclient that he maintains at
 http://vmlinux.org/jocke/ntpclient.shtml.  We don't have the same
 maintenance and build system sensibilities; some people may prefer his.
 In particular, he has converted his ntpclient to daemon and syslog.
-The basic functionality of the two versions should be identical.
 
 I found three forks of ntpclient on github:
   https://github.com/wlach/ntpclient-android
@@ -35,11 +36,12 @@ by way of the POSIX 1003.1-2001 standard routines clock_gettime() and
 clock_settime().  Also see "Bugs", below.
 
 There are a few compile-time configurations possible, which require
-editing the Makefile.  Either do or don't define
+editing the Makefile.  Either do or don't define:
   ENABLE_DEBUG
   ENABLE_REPLAY
   USE_OBSOLETE_GETTIMEOFDAY
   PRECISION_SIOCGSTAMP
+
 Try it first without changing the default: that will give you a full-
 featured ntpclient, that uses modern POSIX time functions, and works
 reasonably with all Linux kernels I have access to in 2015.  There are
@@ -112,6 +114,7 @@ or, if ENABLE_DEBUG was selected at compile time, one of
 36765 01380.381  rejected packet: abs(DELAY)>65536
 36765 01380.381  rejected packet: abs(DISP)>65536
 36765 01380.381  rejected packet: STRATUM==0
+
 To see the actual values of the rejected packet, start ntpclient with the
 -d option; this will give a human-readable printout of every packet received,
 including the rejected ones.  To skip these checks, use the -t switch.
@@ -127,66 +130,6 @@ See its man page and the HOWTO file for more information.
 
 envelope is a perl script that I have used for my lock studies.
 It's kind of a hack and not worth documenting here.
-
-Changes since the widely distributed ntpclient_2000_345 version:
- -- new -g option (has had limited testing)
- -- changed max frequency adjustment from 91 ppm to 150 ppm
- -- fixed "inconsistent" bug in phaselock.c triggered by large freq errors
- -- new files: HOWTO, adjtimex.c, adjtimex.1, rate.awk, log2date.pl
- -- minor source code cleanups
- -- source is now as 64-bit clean as practical; tested on Alpha
- -- optional patches provided by Andy Warner, see andyw.patch
- -- optional patches provided by Linksys, see linksys.patch
- -- removed unreasonable 15020 day offset in date column (xntpd has this
-      offset, which turns days-since-1900-epoch into Modified Julian Day)
-
-Changes since the widely distributed ntpclient_2003_194 version:
- -- default build is now -std=c99, but c89 sill works too
- -- switch default compile from gettimeofday() to POSIX clock_gettime()
- -- more sanity checking on the NTP reply packet, reference RFC-4330
- -- fractional second printing in debug output changed to traditional decimal
- -- new -f switch to set initial frequency
- -- works to specify both -s and -l, will jump-set first and then phase lock
- -- bug fix for select() error handling, thanks to Walter Harms
- -- new man page, contributed by Walter Harms
- -- most subroutines are now flagged static to the compiler
- -- structural changes to the code, such as the new ntpclient.h file
- -- dropped (mostly) obsolete patches from Linksys and Andy Warner
-
-Changes since ntpclient_2006_318:
- -- adjustable min_delay parameter, used to be hard-coded 800 microseconds
- -- remove useless listen() call, thanks to Alexander Indenbaum
- -- fix length passed to recvfrom(), thanks to Alexander Indenbaum
- -- tidy up 32-bit integer declarations, prodding from Brian McAllister
- -- added rate2.awk, contributed by Lou Sortman
- -- provide easy way to override 15 second MIN_INTERVAL at compile time
- -- relax MIN_INTERVAL enforcement for one-shot use, thanks to Mihai Buha
-
-Changes since ntpclient_2007_365:
- -- fixed type of sa_xmit_len, thanks vapier
- -- dropped underscores in spelling of adjtimex(2), might make uClibc happier
- -- include netdb.h and always define _BSD_SOURCE to get prototype for herror
- -- minor formatting to align with Nilsson's fork
- -- add -fno-strict-aliasing as needed by traditional network coding style
-
-Changes since ntpclient_2010_365:
- -- fixed and re-enabled -DPRECISION_SIOCGSTAMP, which seems to work properly
-      with modern (e.g., 3.x or 4.x) Linux kernels
- -- tweak coding style to work better with modern compilers (e.g.,
-      gcc-4.9.2 and clang-3.5.0)
- -- make c99 the default
- -- list more warning flags in disabled part of Makefile
- -- minor whitespace, parenthesis, and spelling changes in source files
- -- use LDLIBES instad of LDFLAGS for -lrt in Makefile (thanks, ChristophGr)
- -- move _POSIX_C_SOURCE and _BSD_SOURCE to Makefile
-
-Changes since ntpclient_2015_365:
- -- use modern -D_DEFAULT_SOURCE and -Wextra in Makefile
- -- initialize all fields of ntp_control structure
- -- include <linux/sockios.h> to get SIOCGSTAMP with linux-5.2 and above
- -- update URL for GPLv2
- -- test on gcc-8.3.0, gcc-10.2.1, and gcc-12.2.0
- -- fix other small spelling, grammar, and punctuation problems
 
 Bugs:
  -- Doesn't understand the LI (Leap second Indicator) field of an NTP packet
@@ -206,4 +149,4 @@ Adherence to RFC-4330 chapter 10, Best practices:
  7.  not supported
  8.  not supported (scary opportunity to DOS the _client_)
 
-       - Larry Doolittle  <larry@doolittle.boa.org>
+       - Larry Doolittle
